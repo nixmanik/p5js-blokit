@@ -1,0 +1,7 @@
+services:
+  p5-bullethell:
+    build: .
+    container_name: p5-bullethell
+    ports:
+      - 8081:80
+    restart: unless-stopped
