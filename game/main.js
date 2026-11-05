@@ -1,4 +1,3 @@
-/* 1701ICT Assessment 2 Game : by Niki - s3275104 */
 const CANVAS_X = 1280, CANVAS_Y = 720;
 const MARGIN = 25;
 
@@ -8,14 +7,13 @@ const DEFAULT_SCORE_JSON_BUTTON = false;
 const DEBUG_COL = false;
 
 // Varaibles to hold Manager objects
-let AM, SM, UIM, GM, SCM;
+let SM, UIM, GM, SCM;
 function preload() {
-    AM = new AssetManager();
     SM = new SceneManager();
     UIM = new UIManager();
     GM = new GameManager();
     SCM = new ScoreManager();
-    AM.initialiseAssets();
+    AM.loadManifest(ASSET_MANIFEST);
 }
 
 function setup() {

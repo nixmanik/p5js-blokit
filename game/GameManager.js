@@ -9,9 +9,9 @@ function GameManager() {
     this.initialisePlayer = function (name) {
         this.player = new Player(name);
     }
-    this.newGame = function () {
+    this.newGame = function (playerName = "Player") {
         allSprites.removeSprites();
-        this.initialisePlayer(this.player.name, this.difficulty);
+        this.initialisePlayer(playerName);
         this.gameRunning = true;
         this.game = new Game(this.player, this.difficulty);
     }
@@ -94,13 +94,13 @@ function SpriteController(player, base, difficulty) {
     let go;
     this.spawnPlayer = function () {
         p = createSprite(width / 2, height * .75, 64, 64);
-        p.addImage(AM.get('player.png'));
+        p.addImage(AM.getImage('player'));
         p.setCollider("circle", 0, 0, 18);
         drawSprite(p);
     }
     this.spawnBase = function () {
         b = createSprite(width / 2, height / 2, 128, 128);
-        b.addImage(AM.get('base.png'));
+        b.addImage(AM.getImage('base'));
         b.setCollider("circle");
         b.immovable = true;
         drawSprite(b);
@@ -112,7 +112,7 @@ function SpriteController(player, base, difficulty) {
             m = createSprite(random(XSIDE), random(10, height * .9), 32, 32);
         else
             m = createSprite(random(10, width * .9), random(YSIDE), 32, 32);
-        m.addImage(AM.get('bullet.png'));
+        m.addImage(AM.getImage('bullet'));
         m.attractionPoint(2.5, width / 2, height / 2);
         m.setCollider("circle", 0, 0, 8);
         m.setSpeed(random(.5, 1) * mSpeedMulti);
@@ -144,7 +144,7 @@ function SpriteController(player, base, difficulty) {
         p.collide(b);
         // Player shoots bullets that it moves into
         if (p.displace(mG, this.shootBack)) {
-            AM.get('burp.mp3').play();
+            AM.getAudio('burp').play();
             this.player.adjustScore(100);
         }
         // p.overlap(items, collect);
@@ -164,13 +164,13 @@ function SpriteController(player, base, difficulty) {
             this.base.adjustHealth(-1);
         // Bullets shoot bullets that they collide into
         if (sG.collide(mG, this.shootBack)) {
-            AM.get('burp.mp3').play();
+            AM.getAudio('burp').play();
             this.player.adjustScore(200);
         }
     }
     this.baseHit = function (missile, base) {
         let startX = b.position.x, startY = b.position.y;
-        AM.get('eh.mp3').play();
+        AM.getAudio('eh').play();
         missile.remove();
         for (let i = 0; i < 3; ++i) {
             b.position.x -= random(-2, 2);
@@ -207,7 +207,7 @@ function SpriteController(player, base, difficulty) {
     }
     this.gameOver = function () {
         go = createSprite(width / 2, height / 2, 640, 355);
-        go.addImage(AM.get('gameover.png'));
+        go.addImage(AM.getImage('gameover'));
         go.immovable = true;
         drawSprite(go);
     }

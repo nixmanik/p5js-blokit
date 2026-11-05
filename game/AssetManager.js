@@ -1,47 +1,82 @@
-const PATH = "game/assets/";
-const ATYPE = { IMAGE: 0, AUDIO: 1 };
-
-function AssetManager() {
-    this.assets = [];
-    this.assetID = 0;
-
-    // Used when initialising AM to help structure assets with an ID
-    this.load = function (atype, filename) {
-        let data;
-        if (atype == ATYPE.IMAGE)
-            data = loadImage(PATH + filename);
-        else if (atype == ATYPE.AUDIO)
-            data = loadSound(PATH + filename);
-        this.assets[this.assetID] = new Asset(this.assetID, data, filename);
-        this.assetID++;
+class AssetManager {
+    constructor() {
+        this.assets = {
+            images: {},
+            audio: {}
+        };
+        this.path = "game/assets/";
     }
 
-    // Function to assign images easily
-    this.get = function (filename) {
-        let getImg = this.assets.find((asset) => {
-            return asset.name === filename;
-        })
-        return getImg.data;
+    loadManifest(manifest) {
+        // Load Images
+        if (manifest.images) {
+            for (let [key, filename] of Object.entries(manifest.images)) {
+                this.assets.images[key] = loadImage(this.path + filename);
+            }
+        }
+        // Load Audio
+        if (manifest.audio) {
+            for (let [key, filename] of Object.entries(manifest.audio)) {
+                this.assets.audio[key] = loadSound(this.path + filename);
+            }
+        }
+    }
+  
+
+    getImage(key) {
+        const img = this.assets.images[key];
+        if (!img) {
+            console.error(`AssetManager: Image key "${key}" not found.`);
+        }
+        return img;
     }
 
-    // Function that runs in preload to collect all assets
-    this.initialiseAssets = function () {
-        AM.load(ATYPE.IMAGE, 'player.png');
-        AM.load(ATYPE.IMAGE, 'title.png');
-        AM.load(ATYPE.IMAGE, 'asd.png');
-        AM.load(ATYPE.IMAGE, 'bullet.png');
-        AM.load(ATYPE.IMAGE, 'base.png');
-        AM.load(ATYPE.IMAGE, 'gameover.png');
-        AM.load(ATYPE.IMAGE, 'loadoverlay.png');
-        AM.load(ATYPE.AUDIO, 'bgm1.mp3');
-        AM.load(ATYPE.AUDIO, 'burp.mp3');
-        AM.load(ATYPE.AUDIO, 'boop.mp3');
-        AM.load(ATYPE.AUDIO, 'eh.mp3');
+    // Retun audio by name in assets
+    getAudio(key) {
+        const sound = this.assets.audio[key];
+        if (!sound) {
+            console.error(`AssetManager: Audio key "${key}" not found.`);
+        }
+        return sound;
+    }
+
+    /**
+     * Legacy support for .get() calls.
+     * Automatically detects if the request is for an image or audio based on extension.
+     */
+    get(filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        const imageExts = ['png', 'jpg', 'jpeg', 'gif'];
+        const audioExts = ['mp3', 'wav', 'ogg'];
+
+        if (imageExts.includes(ext)) {
+            const key = filename.split('.')[0];
+            return this.getImage(key);
+        } else if (audioExts.includes(ext)) {
+            const key = filename.split('.')[0];
+            return this.getAudio(key);
+        }
+
+        console.error(`AssetManager: Unsupported file extension in .get("${filename}")`);
+        return null;
+    }
+
+    /**
+     * Extracts a specific frame from a sprite sheet.
+     * NOTE: To avoid memory leaks, call this during setup or initialization,
+     * not inside the draw() loop.
+     * @param {string} key - The manifest key for the sheet.
+     * @param {number} col - Column index (0-based).
+     * @param {number} row - Row index (0-based).
+     * @param {number} w - Width of one frame.
+     * @param {number} h - Height of one frame.
+     */
+    getSprite(key, col, row, w, h) {
+        const sheet = this.getImage(key);
+        if (!sheet) return null;
+        return sheet.getImage(col * w, row * h, w, h);
     }
 }
 
-function Asset(assetID, data, filename) {
-    this.id = assetID;
-    this.name = filename;
-    this.data = data;
-}
+// Instantiate globally for use in other game files
+const AM = new AssetManager();
