@@ -25,6 +25,10 @@ function setup() {
 
 // All Scene drawing is handing inside SM
 function draw() {
-    removeElements();
+    // Clear all DOM elements created by p5.js (buttons, inputs, etc)
+    // This prevents the "button stacking" bug in Firefox/Chrome
+    const elements = document.querySelectorAll('.p5-canvas-element, button, input');
+    elements.forEach(el => el.remove());
+
     SM.start();
 }

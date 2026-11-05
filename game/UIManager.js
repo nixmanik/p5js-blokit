@@ -86,34 +86,44 @@ function UIManager() {
 
         switch (GM.game.state) {
             case GAMESTATE.INGAME:
-                let toggleAim;
-                toggleAim = createButton("Toggle Aim: Mouse/Auto");
+                // We create the button. Because main.js now clears the DOM every frame,
+                // this button will be recreated, but the browser won't stack them.
+                let toggleAim = createButton("Toggle Aim: Mouse/Auto");
                 toggleAim.size(110, 40);
                 toggleAim.position(width - 25 - toggleAim.width, 20);
                 toggleAim.mousePressed(() => GM.game.SC.toggleAim());
+
+                // DRAW UI ON CANVAS (Fixed Firefox bug)
                 push();
+                fill(0, 0, 0, 150); // Semi-transparent black background
+                stroke(255);        // White outline
+                strokeWeight(2);
                 rect(5, 5, 200, 80, 5);
-                textSize(20);
-                textAlign(LEFT);
-                text(`SCORE: ${score}`, 10, 20, 200, 20);
-                text(`BASE HEALTH: ${health}`, 10, 50, 200, 20);
+
+                fill(255);          // White text
+                noStroke();
+                textSize(22);
+                textAlign(LEFT, CENTER);
+
+                // Centered vertically within the rect (rect height 80, text height ~20)
+                text(`SCORE: ${score}`, 20, 25);
+                text(`BASE HEALTH: ${health}`, 20, 55);
                 pop();
                 break;
             case GAMESTATE.POSTGAME:
-                let toMenu, toRetry;
-                toMenu = createButton("Back To Main");
+                let toMenu = createButton("Back To Main");
                 toMenu.position(width / 6 - toMenu.width, height / 2);
                 toMenu.size(150, 100);
                 toMenu.mousePressed(function () {
-                    AM.get('boop.mp3').play();
+                    AM.getAudio('boop').play();
                     SM.set(SCENE.MAIN);
                     loop();
                 })
-                toRetry = createButton("Retry");
+                let toRetry = createButton("Retry");
                 toRetry.position(width / 6 * 5 - toRetry.width, height / 2);
                 toRetry.size(150, 100);
                 toRetry.mousePressed(function () {
-                    AM.get('boop.mp3').play();
+                    AM.getAudio('boop').play();
                     GM.newGame();
                     loop();
                 })
