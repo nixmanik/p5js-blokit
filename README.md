@@ -1,23 +1,19 @@
 # Blokit
 
-The game's legacy build can be played in browser here:
-
-[Blokit](https://bullethell.nixnerver.cc/)
-
-(NOTE: the audio isn't well balanced in this build so the BGM could be loud, lower your speaker volume)
-
-Blokit is a browser-based bullet-hell survival game I developed years ago in university using [p5.js](https://p5js.org/).
-
-The player protects a central base from incoming projectiles by intercepting and deflecting them back towards incoming threats. Build up score by destroying as many projectiles as you can!
+*The game's legacy build can be played in browser [here](https://bullethell.nixnerver.cc/)*
 
 ## About the Project
 
-This repository contains the original p5.js implementation of Blokit.
+Blokit is a browser-based bullet-hell-like survival game I developed while a uni student using [p5.js](https://p5js.org/).
+
+The player protects a central base from incoming projectiles by intercepting and deflecting them back towards incoming threats. Build up score by destroying as many projectiles as you can!
+
+This repository contains the original p5.js implementation of Blokit and everything needed to run the game yourself.
 
 Development is split across two efforts:
 
 - **Legacy version:** The original game, preserved on the `legacy` branch and maintained for the playable build linked above.
-- **Modernisation:** Refactoring and bug fixing the original implementation, primarily as an opportunity to practise software development and version control workflows. Eventually I'll get to a complete 1.0 legacy version, but I'm doing this without AI for the most part and I'm in no rush.
+- **Modernisation:** Refactoring and bug fixing the original implementation, primarily as an opportunity to practise software development and version control workflows.
 
 I'm remaking this game concept as a fully fleshed out indie release expected to be ready for release in 2027. That version will not be part of this repository.
 
@@ -109,7 +105,7 @@ docker compose down
 
 ## Development Status
 
-Blokit is a legacy project undergoing gradual modernisation.
+Blokit is a legacy project undergoing gradual modernisation with known bugs to squash.
 
 The original implementation remains available for reference and deployment. The modernisation work focuses on improving the existing codebase rather than introducing the planned Godot reboot into this repository.
 
