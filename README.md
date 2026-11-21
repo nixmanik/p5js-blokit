@@ -1,6 +1,6 @@
 # Blokit
 
-*The game's legacy build can be played in browser [here](https://bullethell.nixnerver.cc/)*
+*The game's legacy build can be played in browser [here](https://blokit.nixnerver.cc/)*
 
 ## About the Project
 
